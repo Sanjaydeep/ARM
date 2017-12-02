@@ -1,0 +1,92 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 PRESERVE8
+    2 00000000                 THUMB
+    3 00000000                 AREA             appcode, CODE, READONLY
+    4 00000000                 EXPORT           __main
+    5 00000000                 ENTRY
+    6 00000000         __main  FUNCTION
+    7 00000000 EEB0 0A08       VMOV.F32         s0, #3.0    ; x value in e^x 
+    8 00000004 EEF2 0A04       VMOV.F32         s1, #10.0   ; i,number of terms
+                                                             in taylor series t
+                                                            o be considered
+    9 00000008 EEB7 1A00       VMOV.F32         s2, #1.0    ; n in the nth term
+                                                             of the taylor seri
+                                                            es
+   10 0000000C EEF7 1A00       VMOV.F32         s3, #1.0    ; result of e^x
+   11 00000010 EEF7 2A00       VMOV.F32         s5, #1.0    ; for incrementing
+   12 00000014         
+   13 00000014 EE80 2A01       VDIV.F32         s4, s0, s2  ; variable to store
+                                                             the nth term of ta
+                                                            ylor serie (x^n/n!)
+                                                            
+   14 00000018         
+   15 00000018 EE71 1A82 
+                       loop    VADD.F32         s3,s3,s4    ; result = result +
+                                                             nth term 
+   16 0000001C EE31 1A22       VADD.F32         s2,s2,s5    ; incrementing n
+   17 00000020 EE22 2A00       VMUL.F32         s4,s4,s0
+   18 00000024 EE82 2A01       VDIV.F32         s4,s4,s2    ; storing (n+1)th t
+                                                            erm
+   19 00000028 EE70 0AE2       VSUB.F32         s1,s1,s5    ; decrementing coun
+                                                            ter
+   20 0000002C EEF5 0A40       VCMP.F32         s1,#0.0     ; is 'i' terms cons
+                                                            idered?
+   21 00000030 EEF1 FA10       VMRS             APSR_nzcv, FPSCR ; Copy FPSCR t
+                                                            o APSR_nzcv
+   22 00000034 D1F0            BNE              loop
+   23 00000036         
+   24 00000036         
+   25 00000036 E7FE    stop    B                stop        ; stop program
+   26 00000038                 ENDFUNC
+   27 00000038                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\final.d -o.\objects\final.o -I"D:\IIITB ESD materials
+\sem3_2017\ARM\exp-x\RTE\_Target_1" -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS
+\Include -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\Device\ARM\ARMCM4\Include --pred
+efine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 522" --predefine="_RT
+E_ SETA 1" --predefine="ARMCM4_FP SETA 1" --list=.\listings\final.lst final.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__main 00000000
+
+Symbol: __main
+   Definitions
+      At line 6 in file final.s
+   Uses
+      At line 4 in file final.s
+Comment: __main used once
+appcode 00000000
+
+Symbol: appcode
+   Definitions
+      At line 3 in file final.s
+   Uses
+      None
+Comment: appcode unused
+loop 00000018
+
+Symbol: loop
+   Definitions
+      At line 15 in file final.s
+   Uses
+      At line 22 in file final.s
+Comment: loop used once
+stop 00000036
+
+Symbol: stop
+   Definitions
+      At line 25 in file final.s
+   Uses
+      At line 25 in file final.s
+Comment: stop used once
+4 symbols
+339 symbols in table
